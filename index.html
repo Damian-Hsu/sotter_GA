@@ -27,7 +27,7 @@
     }
 
     function buildRedirectUrl(baseUrl) {
-      const utmParams = ['utm_source', 'utm_medium', 'utm_campaign'];
+      const utmParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
       const url = new URL(baseUrl);
       utmParams.forEach(param => {
         const value = getQueryParam(param);

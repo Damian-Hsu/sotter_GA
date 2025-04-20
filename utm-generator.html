@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>UTM 追蹤網址產生器</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    input, select { width: 100%; margin-bottom: 1rem; padding: 0.5rem; }
+    button { padding: 0.5rem 1rem; }
+    textarea { width: 100%; height: 60px; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <h2>🎯 UTM 追蹤網址產生器</h2>
+
+  <label>跳轉目標（goto）</label>
+  <select id="goto">
+    <option value="fb">Facebook</option>
+    <option value="ig">Instagram</option>
+    <option value="td">Threads</option>
+    <option value="ms">賣貨便</option>
+    
+  </select>
+
+  <label>來源（utm_source）</label>
+
+  <select id="utm_source">
+    <option value="fb">Facebook</option>
+    <option value="ig">Instagram</option>
+    <option value="td">Threads</option>
+  </select>
+  <label>媒介（utm_medium）</label>
+  <input type="text" id="utm_medium" placeholder="例如：bio, story">
+
+  <label>活動名稱（utm_campaign）</label>
+  <input type="text" id="utm_campaign" placeholder="例如：spring_promo">
+
+
+  <button onclick="generateUrl()">產生追蹤網址</button>
+
+  <label>產生的追蹤連結：</label>
+  <textarea id="result" readonly></textarea>
+
+  <script>
+    const baseRedirectUrl = "https://imyudie.github.io/sotter_GA/";
+
+    function generateUrl() {
+      const goto = document.getElementById('goto').value;
+      const utm_source = document.getElementById('utm_source').value.trim();
+      const utm_medium = document.getElementById('utm_medium').value.trim();
+      const utm_campaign = document.getElementById('utm_campaign').value.trim();
+      const utm_content = document.getElementById('goto').value.trim();
+
+      const url = new URL(baseRedirectUrl);
+      url.searchParams.set('goto', goto);
+      url.searchParams.set('utm_source', utm_source|| 'none');
+      url.searchParams.set('utm_medium', utm_medium|| 'none');
+      url.searchParams.set('utm_campaign', utm_campaign|| 'none');
+      url.searchParams.set('utm_content', utm_content|| 'none');
+
+      document.getElementById('result').value = url.toString();
+    }
+  </script>
+
+</body>
+</html>
