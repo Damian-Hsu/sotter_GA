@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>正在跳轉...</title>
+
+  <!-- ✅ Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXX'); // ← 換成你的 GA ID
+  </script>
+
+  <script>
+    // 🔧 設定你的跳轉清單（可擴充）
+    const redirectMap = {
+      fb: "https://www.facebook.com/profile.php?id=61575181584170&locale=zh_TW",
+      ms: "https://myship.7-11.com.tw/general/detail/GM2504166395415?fbclid=PAZXh0bgNhZW0CMTEAAad7U5ujrm9VnLXnSCbgxjp_1A6nQ0RYKIhEONJidQE6tgIMNo-G76d4vy5J7A_aem__6LN6fSPgH_R4veqTEAHMg",
+      ig: "https://www.instagram.com/sotter_studio/"
+    };
+
+    function getQueryParam(key) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(key);
+    }
+
+    function buildRedirectUrl(baseUrl) {
+      const utmParams = ['utm_source', 'utm_medium', 'utm_campaign'];
+      const url = new URL(baseUrl);
+      utmParams.forEach(param => {
+        const value = getQueryParam(param);
+        if (value) {
+          url.searchParams.set(param, value);
+        }
+      });
+      return url.toString();
+    }
+
+    function trackAndRedirect(goto, targetUrl) {
+      let isRedirected = false;
+
+      // ⏱️ 最多等 500ms，就算沒 callback 也跳轉
+      const timeout = setTimeout(() => {
+        if (!isRedirected) {
+          isRedirected = true;
+          window.location.href = targetUrl;
+        }
+      }, 500);
+
+      // ✅ 發送 GA4 事件（非同步），成功再跳
+      gtag('event', 'link_click', {
+        event_category: 'redirect',
+        event_label: goto,
+        event_callback: () => {
+          if (!isRedirected) {
+            clearTimeout(timeout);
+            isRedirected = true;
+            window.location.href = targetUrl;
+          }
+        }
+      });
+    }
+
+    window.onload = () => {
+      const goto = getQueryParam('goto');
+      const baseUrl = redirectMap[goto];
+
+      if (!goto || !baseUrl) {
+        document.body.innerHTML = "<h3>錯誤：未知的跳轉代碼</h3>";
+        return;
+      }
+
+      const fullUrl = buildRedirectUrl(baseUrl);
+      trackAndRedirect(goto, fullUrl);
+    };
+  </script>
+</head>
+<body>
+  <!-- 使用者應該幾乎看不到這段（不到半秒就跳轉） -->
+  <p style="text-align:center;">正在為您跳轉，請稍候...</p>
+</body>
+</html>
