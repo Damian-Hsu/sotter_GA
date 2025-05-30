@@ -24,15 +24,16 @@
   </select>
 
   <label>來源（utm_source）</label>
+  <input type="text" id="utm_source" placeholder="例如：spring_promo">
 
-  <select id="utm_source">
+  <label>媒介（utm_medium）</label>
+
+  <select id="utm_medium">
     <option value="fb">Facebook</option>
     <option value="ig">Instagram</option>
     <option value="td">Threads</option>
   </select>
-  <label>媒介（utm_medium）</label>
-  <input type="text" id="utm_medium" placeholder="例如：bio, story">
-
+  
   <label>活動名稱（utm_campaign）</label>
   <input type="text" id="utm_campaign" placeholder="例如：spring_promo">
 
@@ -43,7 +44,7 @@
   <textarea id="result" readonly></textarea>
 
   <script>
-    const baseRedirectUrl = "https://imyudie.github.io/sotter_GA/";
+    const baseRedirectUrl = "https://Damian-Hsu.github.io/sotter_GA/";
 
     function generateUrl() {
       const goto = document.getElementById('goto').value;
